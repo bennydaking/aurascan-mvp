@@ -5,9 +5,10 @@ import Image from "next/image";
 
 interface ResultsPaywallProps {
     imageUrl: string;
+    onUnlock: () => void;
 }
 
-export function ResultsPaywall({ imageUrl }: ResultsPaywallProps) {
+export function ResultsPaywall({ imageUrl, onUnlock }: ResultsPaywallProps) {
     return (
         <div className="w-full max-w-md mx-auto relative overflow-hidden rounded-2xl border border-white/10 bg-[#0A0A0A] shadow-2xl mt-8">
 
@@ -50,7 +51,10 @@ export function ResultsPaywall({ imageUrl }: ResultsPaywallProps) {
                         Data acquired. Structural anomalies and peak harmonies isolated.
                     </p>
 
-                    <button className="relative w-full group overflow-hidden bg-white text-black font-semibold py-4 px-6 rounded-lg transition-all hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-medical-blue focus:ring-offset-2 focus:ring-offset-black">
+                    <button
+                        onClick={onUnlock}
+                        className="relative w-full group overflow-hidden bg-white text-black font-semibold py-4 px-6 rounded-lg transition-all hover:bg-white/90 focus:outline-none focus:ring-2 focus:ring-medical-blue focus:ring-offset-2 focus:ring-offset-black"
+                    >
                         <span className="relative z-10 flex items-center justify-center gap-2">
                             <Lock className="w-4 h-4" />
                             Unlock Full Report ($2.99)

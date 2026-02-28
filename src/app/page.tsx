@@ -4,21 +4,41 @@ import { useState, useRef, ChangeEvent } from "react";
 import { Upload } from "lucide-react";
 import { ScannerOverlay } from "@/components/ScannerOverlay";
 import { ResultsPaywall } from "@/components/ResultsPaywall";
+import { BiometricReport } from "@/components/BiometricReport";
 
-type AppState = "idle" | "scanning" | "results";
+type AppState = "idle" | "scanning" | "results" | "report";
+
+interface AnalysisResult {
+  ratings: {
+    symmetry: number;
+    jawline: number;
+    skin: number;
+    overall: number;
+  };
+  flaws: string[];
+  improvements: string[];
+}
 
 export default function Home() {
   const [appState, setAppState] = useState<AppState>("idle");
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setImageFile(file);
       setImageUrl(URL.createObjectURL(file));
-      startScanFlow();
+      initiateAnalysis(file);
     }
   };
 
@@ -26,19 +46,43 @@ export default function Home() {
     e.preventDefault();
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0];
-      setImageFile(file);
       setImageUrl(URL.createObjectURL(file));
-      startScanFlow();
+      initiateAnalysis(file);
     }
   };
 
-  const startScanFlow = () => {
+  const initiateAnalysis = async (file: File) => {
     setAppState("scanning");
 
-    // Simulate the scanning process for massive perceived value (cold & judging vibe)
-    setTimeout(() => {
+    // Start min 6s timer for UX/Perceived Value
+    const uxTimer = new Promise(resolve => setTimeout(resolve, 6000));
+
+    try {
+      const base64 = await fileToBase64(file);
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageBase64: base64 }),
+      });
+
+      if (!response.ok) throw new Error("Analysis failed");
+      const data = await response.json();
+      setAnalysisResult(data);
+
+      // Wait for at least the 6s timer to finish
+      await uxTimer;
       setAppState("results");
-    }, 6000); // 6 seconds of cycling niche terms
+    } catch (err) {
+      console.error(err);
+      setAppState("idle");
+      alert("Biometric analysis failed. Please try a clearer image.");
+    }
+  };
+
+  const handleReset = () => {
+    setAppState("idle");
+    setImageUrl(null);
+    setAnalysisResult(null);
   };
 
   return (
@@ -62,18 +106,20 @@ export default function Home() {
         </span>
       </div>
 
-      <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center">
+      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
 
-        {/* Header Section */}
-        <div className="text-center mb-12 mt-12 md:mt-4 w-full px-4">
-          <h1 className="text-[11vw] leading-[1] md:text-7xl font-black mb-2 uppercase tracking-tighter drop-shadow-2xl">
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-[#666666]">THE MIRROR LIES.</span><br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-cyan-400">DATA DOESN'T.</span>
-          </h1>
-          <p className="text-white/60 text-sm md:text-base max-w-sm mx-auto leading-relaxed mt-6">
-            Precision biometric analysis. 98% accuracy. Unlock your true rating.
-          </p>
-        </div>
+        {/* Header Section (Hide if showing full report) */}
+        {appState !== "report" && (
+          <div className="text-center mb-12 mt-12 md:mt-4 w-full px-4">
+            <h1 className="text-[11vw] leading-[1] md:text-7xl font-black mb-2 uppercase tracking-tighter drop-shadow-2xl">
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-[#666666]">THE MIRROR LIES.</span><br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-cyan-400">DATA DOESN'T.</span>
+            </h1>
+            <p className="text-white/60 text-sm md:text-base max-w-sm mx-auto leading-relaxed mt-6">
+              Precision biometric analysis. 98% accuracy. Unlock your true rating.
+            </p>
+          </div>
+        )}
 
         {/* Dynamic Content Area */}
         <div className="w-full relative min-h-[400px] flex items-center justify-center">
@@ -124,9 +170,9 @@ export default function Home() {
           )}
 
           {appState === "scanning" && (
-            <div className="w-full max-w-md aspect-square relative rounded-2xl overflow-hidden border border-white/10 bg-clinical-black">
+            <div className="w-full max-w-md aspect-square relative rounded-2xl overflow-hidden border border-white/10 bg-clinical-black shadow-[0_0_50px_rgba(59,130,246,0.1)]">
               {imageUrl && (
-                <img src={imageUrl} alt="Target" className="w-full h-full object-cover opacity-30 grayscale filter" />
+                <img src={imageUrl} alt="Target" className="w-full h-full object-cover opacity-40 grayscale filter" />
               )}
               <ScannerOverlay />
             </div>
@@ -134,7 +180,17 @@ export default function Home() {
 
           {appState === "results" && imageUrl && (
             <div className="w-full">
-              <ResultsPaywall imageUrl={imageUrl} />
+              <ResultsPaywall imageUrl={imageUrl} onUnlock={() => setAppState("report")} />
+            </div>
+          )}
+
+          {appState === "report" && imageUrl && analysisResult && (
+            <div className="w-full mt-12 md:mt-0">
+              <BiometricReport
+                imageUrl={imageUrl}
+                data={analysisResult}
+                onReset={handleReset}
+              />
             </div>
           )}
 
