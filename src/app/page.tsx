@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
-import { Upload, Hexagon, Microscope, TrendingUp, ChevronDown, Crosshair, Network } from "lucide-react";
+import { Upload, Hexagon, Microscope, TrendingUp, ChevronDown, Lock, Shield, Sparkles } from "lucide-react";
 import { ScannerOverlay } from "@/components/ScannerOverlay";
 import { ResultsPaywall } from "@/components/ResultsPaywall";
 import { BiometricReport } from "@/components/BiometricReport";
@@ -92,35 +92,27 @@ export default function Home() {
 
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center p-6 md:p-24 overflow-hidden">
 
-        {/* Background Grid Pattern */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-0"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 1) 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
-          }}
-        />
-
-        {/* Radial Gradient Glow (Breathing) */}
-        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(139,92,246,0.15)_0%,transparent_70%)] rounded-full pointer-events-none animate-breathing z-0" />
+        {/* Global Lighting & Aurora */}
+        <div className="absolute inset-0 pointer-events-none opacity-40 z-0 animate-aurora" />
+        <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,255,255,0.03)_0%,transparent_60%)] rounded-full pointer-events-none z-0" />
 
         {/* Top Left Logo */}
         <div className="absolute top-6 left-6 md:top-8 md:left-8 z-50">
-          <span className="font-sans font-bold text-white tracking-widest text-lg lg:text-xl drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+          <span className="font-sans font-medium text-white/90 tracking-tight text-lg drop-shadow-sm">
             AURASCAN
           </span>
         </div>
 
-        <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center">
 
-          {/* Header Section (Hide if showing full report) */}
+          {/* Header Section */}
           {appState !== "report" && (
-            <div className="text-center mb-12 mt-12 md:mt-4 w-full px-4">
-              <h1 className="text-[11vw] leading-[1] md:text-7xl font-black mb-2 uppercase tracking-tighter drop-shadow-2xl">
-                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-[#666666]">THE MIRROR LIES.</span><br />
-                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-cyan-400">DATA DOESN'T.</span>
+            <div className="text-center mb-16 mt-12 md:mt-4 w-full px-4">
+              <h1 className="text-[12vw] leading-none md:text-[5.5rem] font-medium mb-6 tracking-tighter text-white drop-shadow-2xl">
+                Your Face. Quantified.
               </h1>
-              <p className="text-white/60 text-sm md:text-base max-w-sm mx-auto leading-relaxed mt-6">
-                Precision biometric analysis. 98% accuracy. Unlock your true rating.
+              <p className="text-white/60 text-lg md:text-xl font-light tracking-tight max-w-lg mx-auto leading-relaxed">
+                The world's most advanced aesthetic engine.<br />98% biometric precision. 100% private.
               </p>
             </div>
           )}
@@ -133,7 +125,7 @@ export default function Home() {
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full max-w-md aspect-[4/3] rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl hover:bg-white/10 hover:border-white/20 transition-all duration-500 cursor-pointer flex flex-col items-center justify-center p-8 group relative overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] mx-4 md:mx-0"
+                className="w-full max-w-[320px] aspect-square rounded-[3rem] border border-white/[0.08] bg-white/[0.01] backdrop-blur-3xl hover:bg-white/[0.03] hover:border-white/[0.15] transition-all duration-700 cursor-pointer flex flex-col items-center justify-center p-8 group relative overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.02)] hover:shadow-[0_0_80px_rgba(255,255,255,0.05)] mx-auto animate-float"
               >
                 <input
                   type="file"
@@ -143,32 +135,15 @@ export default function Home() {
                   onChange={handleImageUpload}
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
 
-                {/* Scanner Line Animation */}
-                <div className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent pointer-events-none animate-scanner" />
-
-                {/* Targeting Corner Brackets */}
-                <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/20 pointer-events-none group-hover:border-white/50 transition-colors" />
-                <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/20 pointer-events-none group-hover:border-white/50 transition-colors" />
-                <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/20 pointer-events-none group-hover:border-white/50 transition-colors" />
-                <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/20 pointer-events-none group-hover:border-white/50 transition-colors" />
-
-                <div className="relative w-16 h-16 mb-6 rounded-full border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center group-hover:scale-105 group-hover:border-white/40 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all duration-500">
-                  <Upload className="w-6 h-6 text-white/60 group-hover:text-white transition-colors" />
+                <div className="relative w-16 h-16 mb-6 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-xl flex items-center justify-center group-hover:scale-105 group-hover:bg-white/[0.08] transition-all duration-500 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                  <Upload className="w-6 h-6 text-white/70 group-hover:text-white transition-colors" />
                 </div>
 
-                <div className="relative text-center font-mono text-xs text-white/50 uppercase tracking-widest leading-loose">
-                  <span className="hidden md:inline">Drop image for</span>
-                  <span className="md:hidden">Tap to scan</span><br />
-                  <span className="text-white/90 font-bold tracking-widest text-[10px] md:text-sm drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">Biometric Decomposition</span>
-                </div>
-
-                <div className="relative mt-8">
-                  <div className="absolute inset-0 bg-white/30 blur-xl rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="relative inline-flex items-center justify-center bg-white text-black font-black py-4 px-12 text-base uppercase tracking-widest rounded-md transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover-glitch">
-                    [ START SCAN ]
-                  </span>
+                <div className="relative text-center text-sm font-light text-white/50 tracking-tight">
+                  Drag & drop image or<br />
+                  <span className="text-white/80 font-medium">click to upload</span>
                 </div>
               </div>
             )}
@@ -182,9 +157,9 @@ export default function Home() {
               </div>
             )}
 
-            {appState === "results" && imageUrl && (
+            {appState === "results" && imageUrl && analysisResult && (
               <div className="w-full">
-                <ResultsPaywall imageUrl={imageUrl} onUnlock={() => setAppState("report")} />
+                <ResultsPaywall imageUrl={imageUrl!} data={analysisResult} onUnlock={() => setAppState("report")} />
               </div>
             )}
 
@@ -204,49 +179,62 @@ export default function Home() {
 
       </section>
 
-      {/* The Protocol Section - Only visible in idle state for clean UX */}
+      {/* The Bento Grid Section - Only visible in idle state for clean UX */}
       {appState === "idle" && (
-        <section className="w-full bg-[#020202] border-t border-white/5 py-24 px-6 relative z-20">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase text-center mb-12">Analysis Vectors</h2>
+        <section className="w-full relative z-20 pb-32 px-6">
+          <div className="max-w-5xl mx-auto">
 
-            <div className="grid md:grid-cols-3 gap-6 mb-24">
-              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] transition-all duration-300 group">
-                <Hexagon className="w-8 h-8 text-cyan-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Geometric Mapping</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Precise calculation of facial ratios, symmetry scores, and jawline angularity. We quantify your structure.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-24">
+
+              {/* Large Left Card */}
+              <div className="md:col-span-2 p-8 md:p-12 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
+                <Hexagon className="w-8 h-8 text-white/80 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-medium tracking-tight text-3xl mb-4">GLM-4V Vision Engine.</h3>
+                <p className="text-base text-white/50 leading-relaxed font-light max-w-sm">Precise algorithmic processing mapping complex facial vectors to evaluate structural harmony with ruthless accuracy.</p>
               </div>
-              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300 group">
-                <Microscope className="w-8 h-8 text-red-500 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Pathology Report</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Identification of negative tilts, asymmetry, and dermal inconsistencies. See what others see, unfiltered.</p>
-              </div>
-              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 group">
-                <TrendingUp className="w-8 h-8 text-purple-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Optimization Roadmap</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Actionable, step-by-step protocols to maximize your genetic potential. Stop guessing, start improving.</p>
+
+              {/* Stacked Right Cards */}
+              <div className="grid grid-rows-2 gap-4">
+
+                {/* Top Right Card */}
+                <div className="p-8 pb-10 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
+                  <Shield className="w-7 h-7 text-white/80 mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-medium tracking-tight text-xl mb-2">Zero Retention.</h3>
+                  <p className="text-sm text-white/50 leading-relaxed font-light">End-to-end encrypted protocol. Files purged in RAM implicitly.</p>
+                </div>
+
+                {/* Bottom Right Card */}
+                <div className="p-8 pb-10 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
+                  <TrendingUp className="w-7 h-7 text-white/80 mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-medium tracking-tight text-xl mb-2">Personalized Roadmap.</h3>
+                  <p className="text-sm text-white/50 leading-relaxed font-light">Customized actionable insights to maximize your aesthetic potential.</p>
+                </div>
+
               </div>
             </div>
 
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase text-center mb-8">System Queries</h2>
-              <div className="space-y-4">
-                <details className="group border border-white/10 bg-black/40 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-all open:border-cyan-500/50 open:shadow-[0_0_20px_rgba(6,182,212,0.1)]">
-                  <summary className="p-6 font-mono text-sm uppercase tracking-widest text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
-                    <span>Is this accurate?</span>
-                    <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
+            <div className="max-w-2xl mx-auto border-t border-white/[0.05] pt-16">
+              <h2 className="text-lg font-medium tracking-tight text-white mb-8 text-center">Frequently Asked Queries</h2>
+              <div className="space-y-3">
+                <details className="group border border-white/[0.05] bg-white/[0.01] rounded-2xl overflow-hidden cursor-pointer hover:bg-white/[0.02] transition-all">
+                  <summary className="p-6 font-medium text-[15px] tracking-tight text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
+                    <span>What level of precision can I expect?</span>
+                    <ChevronDown className="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
-                    <span className="text-cyan-500 mr-2">{'>'}</span> Affirmative. We utilize advanced computer vision for 98% biometric precision.
+                  <div className="p-6 pt-0 text-[15px] text-white/50 leading-relaxed border-t border-white/[0.05] font-light">
+                    We utilize advanced computer vision matrix-algorithms for 98% granular biometric precision across facial planes.
                   </div>
                 </details>
-                <details className="group border border-white/10 bg-black/40 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-all open:border-cyan-500/50 open:shadow-[0_0_20px_rgba(6,182,212,0.1)]">
-                  <summary className="p-6 font-mono text-sm uppercase tracking-widest text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
-                    <span>Is my photo saved?</span>
-                    <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
+                <details className="group border border-white/[0.05] bg-white/[0.01] rounded-2xl overflow-hidden cursor-pointer hover:bg-white/[0.02] transition-all">
+                  <summary className="p-6 font-medium text-[15px] tracking-tight text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
+                    <span>Is my biometric data stored?</span>
+                    <ChevronDown className="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
-                    <span className="text-cyan-500 mr-2">{'>'}</span> Negative. Images are processed in RAM and purged immediately after analysis. Privacy is absolute.
+                  <div className="p-6 pt-0 text-[15px] text-white/50 leading-relaxed border-t border-white/[0.05] font-light">
+                    Negative. Uploads are strictly ephemeral, processed entirely in system memory (RAM), and purged securely post-analysis.
                   </div>
                 </details>
               </div>

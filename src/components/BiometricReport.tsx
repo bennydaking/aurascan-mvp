@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, AlertTriangle, ArrowUpRight, Hexagon, Activity, Target } from "lucide-react";
+import { AlertCircle, Target, Sparkles, Activity } from "lucide-react";
 import Image from "next/image";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
@@ -23,146 +23,120 @@ interface BiometricReportProps {
 
 export function BiometricReport({ imageUrl, data, onReset }: BiometricReportProps) {
     return (
-        <div className="w-full max-w-2xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+        <div className="w-full max-w-6xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-1000 mt-8">
+            <div className="grid lg:grid-cols-[1fr_1.5fr] gap-8 items-start">
 
-            {/* Top Section - Image and Overall Score */}
-            <div className="grid md:grid-cols-2 gap-8 items-start">
-                <div className="relative aspect-square rounded-2xl overflow-hidden border border-cyan-500/30 bg-black shadow-[0_0_40px_rgba(6,182,212,0.15)] group group-hover:shadow-[0_0_50px_rgba(6,182,212,0.3)] transition-all duration-700">
-                    <Image src={imageUrl} alt="Analysis Target" fill className="object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
+                {/* LEFT: THE EVIDENCE (Photo & Mesh) */}
+                <div className="relative w-full aspect-[3/4] rounded-[2.5rem] overflow-hidden border border-white/[0.05] bg-white/[0.01] shadow-2xl sticky top-8">
+                    <Image src={imageUrl} alt="Analysis Target" fill className="object-cover opacity-90 filter grayscale" />
 
-                    {/* Active HUD Targeting */}
-                    {/* Face Mesh pattern */}
-                    <div className="absolute inset-0 pointer-events-none opacity-20"
-                        style={{
-                            backgroundImage: `linear-gradient(to right, rgba(0, 255, 255, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 255, 255, 0.2) 1px, transparent 1px)`,
-                            backgroundSize: '30px 30px'
-                        }}
-                    />
+                    {/* Dark gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent pointer-events-none" />
 
-                    {/* Reticles */}
-                    <div className="absolute top-[35%] left-[25%] w-12 h-12 border-l border-t border-cyan-400/80 pointer-events-none animate-pulse" />
-                    <div className="absolute top-[35%] right-[25%] w-12 h-12 border-r border-t border-cyan-400/80 pointer-events-none animate-pulse" />
-                    <div className="absolute top-[65%] left-1/2 -translate-x-1/2 w-16 h-8 border-b border-l border-r border-cyan-400/60 pointer-events-none" />
+                    {/* Face Mesh Overlay Mock (White structural lines) */}
+                    <svg className="absolute inset-0 w-full h-full opacity-30 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M 30,50 L 50,70 L 70,50 L 50,30 Z" fill="none" stroke="white" strokeWidth="0.5" className="animate-[pulse_3s_ease-in-out_infinite]" />
+                        <path d="M 20,40 L 30,50 L 50,70 L 70,50 L 80,40" fill="none" stroke="white" strokeWidth="0.2" />
+                        <path d="M 50,30 L 50,70" fill="none" stroke="white" strokeWidth="0.2" />
+                        <circle cx="30" cy="50" r="1" fill="white" />
+                        <circle cx="70" cy="50" r="1" fill="white" />
+                        <circle cx="50" cy="70" r="1" fill="white" />
+                        <circle cx="50" cy="30" r="1" fill="white" />
+                    </svg>
 
-                    {/* Scanner Line */}
-                    <div className="absolute left-0 w-full h-[2px] bg-cyan-400/80 pointer-events-none animate-[ping_4s_cubic-bezier(0,0,0.2,1)_infinite] shadow-[0_0_15px_rgba(6,182,212,1)]" style={{ top: '50%' }} />
-
-                    {/* Data Stream */}
-                    <div className="absolute top-4 right-4 text-[7px] font-mono text-cyan-400/60 text-right uppercase tracking-widest hidden sm:block pointer-events-none">
-                        <div className="leading-snug">0x9F43.A :: MAPPING<br />0x1A2B.C :: SYMMETRY<br />0x8C11.X :: ORBITAL<br />0x4F99.T :: VECTOR<br />0x9F43.A :: MAPPING</div>
-                    </div>
-
-                    <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                        <div className="font-mono text-xs uppercase tracking-widest text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,1)] font-bold flex items-center gap-2 bg-black/50 px-3 py-1 rounded-sm border border-cyan-500/30">
-                            <span className="w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_10px_#06b6d4] animate-pulse" />
-                            [ SUBJECT LOCKED ]
-                        </div>
+                    <div className="absolute top-6 left-6 flex items-center gap-2 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20">
+                        <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                        <span className="text-xs font-medium tracking-tight text-white">Subject Locked</span>
                     </div>
                 </div>
 
+                {/* RIGHT: THE VERDICT (Dashboard) */}
                 <div className="space-y-6 flex flex-col h-full">
-                    <div className="p-6 rounded-2xl border border-cyan-500/20 bg-black backdrop-blur-xl relative overflow-hidden shadow-[0_0_30px_rgba(6,182,212,0.1)]">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <Target className="w-32 h-32 text-cyan-400 animate-[spin_10s_linear_infinite]" />
+
+                    {/* Top Dashboard Row */}
+                    <div className="grid sm:grid-cols-2 gap-6">
+
+                        {/* Score Card */}
+                        <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden flex flex-col justify-center">
+                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(6,182,212,0.1)_0%,transparent_50%)]" />
+                            <h3 className="text-sm font-medium tracking-tight text-white/50 mb-2">Overall Aesthetic Tier</h3>
+                            <div className="flex items-baseline gap-2">
+                                <span className="text-[5rem] leading-none font-medium tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-white/90 to-cyan-400 drop-shadow-sm">
+                                    {data.overallScore}
+                                </span>
+                                <span className="text-2xl font-light text-white/30">/ 100</span>
+                            </div>
                         </div>
-                        <h3 className="text-[10px] font-mono uppercase tracking-[0.4em] text-cyan-400/60 mb-2">Subject Index Query</h3>
-                        <div className="flex items-baseline gap-2 relative z-10">
-                            <span className="text-7xl font-black text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">{data.overallScore}</span>
-                            <span className="text-xl font-bold text-white/30">/ 100</span>
+
+                        {/* Radar Chart */}
+                        <div className="p-6 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden h-[250px] flex items-center justify-center">
+                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.05)_0%,transparent_60%)] animate-pulse" />
+                            <ResponsiveContainer width="100%" height="100%" className="relative z-10">
+                                <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
+                                    { subject: 'Symmetry', A: data.metrics.symmetry, fullMark: 100 },
+                                    { subject: 'Jawline', A: data.metrics.jawline, fullMark: 100 },
+                                    { subject: 'Cheekbones', A: data.metrics.cheekbones, fullMark: 100 },
+                                    { subject: 'Skin Quality', A: data.metrics.skin, fullMark: 100 },
+                                    { subject: 'Eye Area', A: data.metrics.eyes, fullMark: 100 },
+                                ]}>
+                                    <PolarGrid stroke="rgba(255,255,255,0.05)" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontFamily: 'sans-serif' }} />
+                                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+                                    <Radar name="Biometrics" dataKey="A" stroke="#06b6d4" strokeWidth={1.5} fill="rgba(6,182,212,0.15)" fillOpacity={1} />
+                                </RadarChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
 
-                    <div className="flex-1 min-h-[300px] p-4 rounded-xl border border-cyan-500/10 bg-black relative overflow-hidden group">
-                        {/* Holographic Radar Glow */}
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.1)_0%,transparent_60%)] animate-pulse" />
+                    {/* Lists Section */}
+                    <div className="grid sm:grid-cols-2 gap-6 flex-1">
 
-                        <ResponsiveContainer width="100%" height="100%" className="relative z-10">
-                            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
-                                { subject: 'Symmetry', A: data.metrics.symmetry, fullMark: 100 },
-                                { subject: 'Jawline', A: data.metrics.jawline, fullMark: 100 },
-                                { subject: 'Cheekbones', A: data.metrics.cheekbones, fullMark: 100 },
-                                { subject: 'Skin Quality', A: data.metrics.skin, fullMark: 100 },
-                                { subject: 'Eye Area', A: data.metrics.eyes, fullMark: 100 },
-                            ]}>
-                                <PolarGrid stroke="rgba(6,182,212,0.15)" />
-                                <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(6,182,212,0.9)', fontSize: 11, fontFamily: 'monospace', fontWeight: 'bold' }} />
-                                <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                <Radar
-                                    name="Biometrics"
-                                    dataKey="A"
-                                    stroke="#00ffff"
-                                    strokeWidth={2}
-                                    fill="url(#hologram)"
-                                    fillOpacity={0.7}
-                                />
-                                <defs>
-                                    <radialGradient id="hologram" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                                        <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.9} />
-                                        <stop offset="100%" stopColor="#00ffff" stopOpacity={0.2} />
-                                    </radialGradient>
-                                </defs>
-                            </RadarChart>
-                        </ResponsiveContainer>
+                        {/* Analysis (Flaws) */}
+                        <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden">
+                            <div className="flex items-center gap-2 mb-6">
+                                <AlertCircle className="w-5 h-5 text-white/70" />
+                                <h4 className="text-xl font-medium tracking-tight text-white">Analysis</h4>
+                            </div>
+                            <ul className="space-y-4">
+                                {data.deviations.map((flaw, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-white/60 text-sm font-light leading-relaxed group">
+                                        <div className="mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-white/50 transition-colors" />
+                                        <span>{flaw}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* Protocol (Fixes) */}
+                        <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden">
+                            <div className="flex items-center gap-2 mb-6">
+                                <Sparkles className="w-5 h-5 text-white/70" />
+                                <h4 className="text-xl font-medium tracking-tight text-white">Protocol</h4>
+                            </div>
+                            <ul className="space-y-4">
+                                {data.optimizations.map((optimization, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-white/60 text-sm font-light leading-relaxed group">
+                                        <div className="text-xs font-medium text-white/30 group-hover:text-white/60 transition-colors pt-0.5">
+                                            {String(i + 1).padStart(2, '0')}.
+                                        </div>
+                                        <span>{optimization}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Action Section */}
+                    <div className="pt-4 flex justify-end">
+                        <button
+                            onClick={onReset}
+                            className="text-sm tracking-tight text-white/30 hover:text-white transition-colors flex items-center gap-2"
+                        >
+                            Start New Scan
+                        </button>
                     </div>
                 </div>
             </div>
-
-            {/* Critical Findings Section */}
-            <div className="grid md:grid-cols-2 gap-6">
-                {/* Flaws / Deviations */}
-                <div className="p-6 rounded-xl border border-red-500/40 bg-black/60 backdrop-blur-xl space-y-5 shadow-[0_0_30px_rgba(239,68,68,0.1)] relative overflow-hidden group hover:border-red-500/60 transition-colors">
-                    {/* Scanline pattern */}
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMikiLz48L3N2Zz4=')] opacity-50 pointer-events-none" />
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-red-500 to-transparent opacity-80 shadow-[0_0_10px_rgba(239,68,68,0.8)]" />
-                    <div className="absolute inset-0 border border-red-500/10 pointer-events-none rounded-xl" />
-
-                    <div className="flex items-center gap-3 text-red-500 mb-2 border-b border-red-500/20 pb-4 relative z-10">
-                        <AlertTriangle className="w-6 h-6 animate-pulse drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-                        <h4 className="text-lg font-mono uppercase tracking-widest font-black drop-shadow-[0_0_10px_rgba(239,68,68,0.5)]">Deviations</h4>
-                    </div>
-                    <ul className="space-y-4 pt-2 relative z-10">
-                        {data.deviations.map((flaw, i) => (
-                            <li key={i} className="text-sm text-red-100/90 leading-relaxed font-mono flex items-start gap-3 group-hover:text-white transition-colors">
-                                <Hexagon className="w-4 h-4 text-red-500/70 mt-1 flex-shrink-0" />
-                                <span>{flaw}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-
-                {/* Improvements / Optimization */}
-                <div className="p-6 rounded-xl border border-cyan-500/40 bg-black/60 backdrop-blur-xl space-y-5 shadow-[0_0_30px_rgba(6,182,212,0.1)] relative overflow-hidden group hover:border-cyan-500/60 transition-colors">
-                    {/* Scanline pattern */}
-                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSJ0cmFuc3BhcmVudCIvPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMikiLz48L3N2Zz4=')] opacity-50 pointer-events-none" />
-                    <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-400 to-transparent opacity-80 shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
-                    <div className="absolute inset-0 border border-cyan-500/10 pointer-events-none rounded-xl" />
-
-                    <div className="flex items-center gap-3 text-cyan-400 mb-2 border-b border-cyan-500/20 pb-4 relative z-10">
-                        <ArrowUpRight className="w-6 h-6 animate-pulse drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-                        <h4 className="text-lg font-mono uppercase tracking-widest font-black drop-shadow-[0_0_10px_rgba(6,182,212,0.5)]">Optimizations</h4>
-                    </div>
-                    <ul className="space-y-4 pt-2 relative z-10">
-                        {data.optimizations.map((optimization, i) => (
-                            <li key={i} className="text-sm text-cyan-100/90 leading-relaxed font-mono flex items-start gap-3 group-hover:text-white transition-colors">
-                                <Activity className="w-4 h-4 text-cyan-500/70 mt-1 flex-shrink-0" />
-                                <span>{optimization}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-
-            {/* Action Section */}
-            <div className="flex flex-col items-center pt-8 border-t border-white/5">
-                <button
-                    onClick={onReset}
-                    className="text-xs font-mono uppercase tracking-[0.4em] text-white/30 hover:text-white transition-colors"
-                >
-                    [ Re-initialize Scanner ]
-                </button>
-            </div>
-
         </div>
     );
 }
