@@ -184,38 +184,58 @@ export default function Home() {
         <section className="w-full relative z-20 pb-32 px-6">
           <div className="max-w-5xl mx-auto">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-24">
+            <div className="grid md:grid-cols-[1.5fr_1fr] gap-6">
 
-              {/* Large Left Card */}
-              <div className="md:col-span-2 p-8 md:p-12 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
-                <Hexagon className="w-8 h-8 text-white/80 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-medium tracking-tight text-3xl mb-4">GLM-4V Vision Engine.</h3>
-                <p className="text-base text-white/50 leading-relaxed font-light max-w-sm">Precise algorithmic processing mapping complex facial vectors to evaluate structural harmony with ruthless accuracy.</p>
+              {/* Large Card: The Hook */}
+              <div className="group relative p-8 md:p-10 rounded-[2.5rem] bg-white/[0.01] border border-white/[0.05] overflow-hidden backdrop-blur-2xl transition-all duration-700 hover:border-white/[0.1] hover:bg-white/[0.03]">
+                {/* Spotlight Hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(255,255,255,0.06)_0%,transparent_60%)]" />
+
+                {/* Subtle Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 via-transparent to-transparent pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col h-full justify-center space-y-4">
+                  <h3 className="text-3xl font-medium tracking-tight text-white drop-shadow-sm">Biometric Truth.</h3>
+                  <p className="text-base text-white/50 font-light leading-relaxed max-w-md">
+                    The mirror softens reality. Our engine doesn't. We analyze micro-asymmetries, skin topology, and bone structure to give you the raw data.
+                  </p>
+                </div>
               </div>
 
-              {/* Stacked Right Cards */}
-              <div className="grid grid-rows-2 gap-4">
+              {/* Right Column Cards */}
+              <div className="grid grid-rows-2 gap-6">
 
-                {/* Top Right Card */}
-                <div className="p-8 pb-10 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
-                  <Shield className="w-7 h-7 text-white/80 mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-white font-medium tracking-tight text-xl mb-2">Zero Retention.</h3>
-                  <p className="text-sm text-white/50 leading-relaxed font-light">End-to-end encrypted protocol. Files purged in RAM implicitly.</p>
+                {/* Top Right: The Value */}
+                <div className="group relative p-8 rounded-[2.5rem] bg-white/[0.01] border border-white/[0.05] overflow-hidden backdrop-blur-2xl transition-all duration-700 hover:border-white/[0.1] hover:bg-white/[0.03]">
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(255,255,255,0.06)_0%,transparent_60%)]" />
+
+                  {/* Level Up Visualization Background */}
+                  <svg className="absolute bottom-0 right-0 w-full h-1/2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M0,100 L20,80 L40,85 L60,60 L80,70 L100,30 L100,100 Z" fill="white" />
+                    <polyline points="0,100 20,80 40,85 60,60 80,70 100,30" fill="none" stroke="white" strokeWidth="2" strokeLinejoin="round" />
+                  </svg>
+
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <h4 className="text-xl font-medium tracking-tight text-white mb-2">The Optimization Blueprint.</h4>
+                    <p className="text-sm text-white/50 font-light leading-relaxed">
+                      Don't just get rated. Get the roadmap. We provide a step-by-step protocol to maximize your genetic potential.
+                    </p>
+                  </div>
                 </div>
 
-                {/* Bottom Right Card */}
-                <div className="p-8 pb-10 rounded-[2.5rem] border border-white-[0.05] bg-white/[0.01] backdrop-blur-2xl hover:bg-white/[0.02] transition-colors relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.03)_0%,transparent_50%)]" />
-                  <TrendingUp className="w-7 h-7 text-white/80 mb-4 group-hover:scale-110 transition-transform" />
-                  <h3 className="text-white font-medium tracking-tight text-xl mb-2">Personalized Roadmap.</h3>
-                  <p className="text-sm text-white/50 leading-relaxed font-light">Customized actionable insights to maximize your aesthetic potential.</p>
+                {/* Bottom Right: The Trust */}
+                <div className="group relative p-8 rounded-[2.5rem] bg-white/[0.01] border border-white/[0.05] overflow-hidden backdrop-blur-2xl transition-all duration-700 hover:border-white/[0.1] hover:bg-white/[0.03]">
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none bg-[radial-gradient(circle_at_var(--mouse-x,50%)_var(--mouse-y,50%),rgba(255,255,255,0.06)_0%,transparent_60%)]" />
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <h4 className="text-xl font-medium tracking-tight text-white mb-2">Incognito Mode.</h4>
+                    <p className="text-sm text-white/50 font-light leading-relaxed">
+                      Your face is your data. We don't keep it. Analysis is ephemeral—once you leave, the data vanishes.
+                    </p>
+                  </div>
                 </div>
 
               </div>
             </div>
-
             <div className="max-w-2xl mx-auto border-t border-white/[0.05] pt-16">
               <h2 className="text-lg font-medium tracking-tight text-white mb-8 text-center">Frequently Asked Queries</h2>
               <div className="space-y-3">

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, Target, Sparkles, Activity } from "lucide-react";
+import { AlertCircle, Sparkles, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
@@ -59,7 +59,7 @@ export function BiometricReport({ imageUrl, data, onReset }: BiometricReportProp
                         {/* Score Card */}
                         <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden flex flex-col justify-center">
                             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(6,182,212,0.1)_0%,transparent_50%)]" />
-                            <h3 className="text-sm font-medium tracking-tight text-white/50 mb-2">Overall Aesthetic Tier</h3>
+                            <h3 className="text-sm font-bold tracking-tight text-white/50 mb-2 uppercase tracking-widest">YOUR AURA SCORE</h3>
                             <div className="flex items-baseline gap-2">
                                 <span className="text-[5rem] leading-none font-medium tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white via-white/90 to-cyan-400 drop-shadow-sm">
                                     {data.overallScore}
@@ -73,16 +73,17 @@ export function BiometricReport({ imageUrl, data, onReset }: BiometricReportProp
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,182,212,0.05)_0%,transparent_60%)] animate-pulse" />
                             <ResponsiveContainer width="100%" height="100%" className="relative z-10">
                                 <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
-                                    { subject: 'Symmetry', A: data.metrics.symmetry, fullMark: 100 },
-                                    { subject: 'Jawline', A: data.metrics.jawline, fullMark: 100 },
-                                    { subject: 'Cheekbones', A: data.metrics.cheekbones, fullMark: 100 },
-                                    { subject: 'Skin Quality', A: data.metrics.skin, fullMark: 100 },
-                                    { subject: 'Eye Area', A: data.metrics.eyes, fullMark: 100 },
+                                    { subject: 'Symmetry', Target: data.metrics.symmetry, Potential: Math.min(100, data.metrics.symmetry + 15), fullMark: 100 },
+                                    { subject: 'Jawline', Target: data.metrics.jawline, Potential: Math.min(100, data.metrics.jawline + 20), fullMark: 100 },
+                                    { subject: 'Cheekbones', Target: data.metrics.cheekbones, Potential: Math.min(100, data.metrics.cheekbones + 10), fullMark: 100 },
+                                    { subject: 'Skin Quality', Target: data.metrics.skin, Potential: Math.min(100, data.metrics.skin + 25), fullMark: 100 },
+                                    { subject: 'Eye Area', Target: data.metrics.eyes, Potential: Math.min(100, data.metrics.eyes + 5), fullMark: 100 },
                                 ]}>
                                     <PolarGrid stroke="rgba(255,255,255,0.05)" />
                                     <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10, fontFamily: 'sans-serif' }} />
                                     <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                                    <Radar name="Biometrics" dataKey="A" stroke="#06b6d4" strokeWidth={1.5} fill="rgba(6,182,212,0.15)" fillOpacity={1} />
+                                    <Radar name="Potential" dataKey="Potential" stroke="#F3F4F6" strokeWidth={1.5} strokeDasharray="4 4" fill="transparent" />
+                                    <Radar name="Biometrics" dataKey="Target" stroke="#06b6d4" strokeWidth={1.5} fill="rgba(6,182,212,0.15)" fillOpacity={1} />
                                 </RadarChart>
                             </ResponsiveContainer>
                         </div>
@@ -94,13 +95,13 @@ export function BiometricReport({ imageUrl, data, onReset }: BiometricReportProp
                         {/* Analysis (Flaws) */}
                         <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden">
                             <div className="flex items-center gap-2 mb-6">
-                                <AlertCircle className="w-5 h-5 text-white/70" />
+                                <AlertCircle className="w-5 h-5 text-red-400" />
                                 <h4 className="text-xl font-medium tracking-tight text-white">Analysis</h4>
                             </div>
                             <ul className="space-y-4">
                                 {data.deviations.map((flaw, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-white/60 text-sm font-light leading-relaxed group">
-                                        <div className="mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-white/50 transition-colors" />
+                                    <li key={i} className="flex items-start gap-3 text-[#F3F4F6] text-sm font-medium leading-relaxed group">
+                                        <div className="mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
                                         <span>{flaw}</span>
                                     </li>
                                 ))}
@@ -110,15 +111,13 @@ export function BiometricReport({ imageUrl, data, onReset }: BiometricReportProp
                         {/* Protocol (Fixes) */}
                         <div className="p-8 rounded-[2.5rem] border border-white/[0.05] bg-white/[0.01] backdrop-blur-2xl relative overflow-hidden">
                             <div className="flex items-center gap-2 mb-6">
-                                <Sparkles className="w-5 h-5 text-white/70" />
+                                <Sparkles className="w-5 h-5 text-cyan-400" />
                                 <h4 className="text-xl font-medium tracking-tight text-white">Protocol</h4>
                             </div>
                             <ul className="space-y-4">
                                 {data.optimizations.map((optimization, i) => (
-                                    <li key={i} className="flex items-start gap-3 text-white/60 text-sm font-light leading-relaxed group">
-                                        <div className="text-xs font-medium text-white/30 group-hover:text-white/60 transition-colors pt-0.5">
-                                            {String(i + 1).padStart(2, '0')}.
-                                        </div>
+                                    <li key={i} className="flex items-start gap-3 text-[#F3F4F6] text-sm font-medium leading-relaxed group">
+                                        <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
                                         <span>{optimization}</span>
                                     </li>
                                 ))}
