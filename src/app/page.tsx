@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
-import { Upload, ScanFace, AlertTriangle, Activity, ChevronDown } from "lucide-react";
+import { Upload, ScanFace, AlertTriangle, Activity, ChevronDown, Crosshair, Network } from "lucide-react";
 import { ScannerOverlay } from "@/components/ScannerOverlay";
 import { ResultsPaywall } from "@/components/ResultsPaywall";
 import { BiometricReport } from "@/components/BiometricReport";
@@ -209,42 +209,42 @@ export default function Home() {
             <h2 className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase text-center mb-12">Analysis Vectors</h2>
 
             <div className="grid md:grid-cols-3 gap-6 mb-24">
-              <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 transition-colors">
-                <ScanFace className="w-6 h-6 text-medical-blue mb-4" />
-                <h3 className="text-white font-bold mb-2">Geometric Mapping</h3>
-                <p className="text-sm text-white/50 leading-relaxed">Precise calculation of facial ratios, symmetry scores, and jawline angularity.</p>
+              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] transition-all duration-300 group">
+                <Crosshair className="w-8 h-8 text-cyan-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Geometric Mapping</h3>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Precise calculation of facial ratios, symmetry scores, and jawline angularity.</p>
               </div>
-              <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 transition-colors">
-                <AlertTriangle className="w-6 h-6 text-warning-red mb-4" />
-                <h3 className="text-white font-bold mb-2">Pathology Report</h3>
-                <p className="text-sm text-white/50 leading-relaxed">Identification of negative tilts, asymmetry, and dermal inconsistencies.</p>
+              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300 group">
+                <AlertTriangle className="w-8 h-8 text-red-500 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Pathology Report</h3>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Identification of negative tilts, asymmetry, and dermal inconsistencies.</p>
               </div>
-              <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm hover:border-white/10 transition-colors">
-                <Activity className="w-6 h-6 text-cyan-400 mb-4" />
-                <h3 className="text-white font-bold mb-2">Optimization Roadmap</h3>
-                <p className="text-sm text-white/50 leading-relaxed">Specific, non-invasive and invasive protocols to maximize your genetic potential.</p>
+              <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 group">
+                <Network className="w-8 h-8 text-purple-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Optimization Protocol</h3>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Specific, non-invasive and invasive protocols to maximize your genetic potential.</p>
               </div>
             </div>
 
             <div className="max-w-2xl mx-auto">
               <h2 className="text-[10px] font-mono tracking-[0.3em] text-white/40 uppercase text-center mb-8">System Queries</h2>
               <div className="space-y-4">
-                <details className="group border border-white/5 bg-white/[0.02] rounded-xl overflow-hidden cursor-pointer">
-                  <summary className="p-6 font-bold text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
-                    Is this accurate?
-                    <ChevronDown className="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform" />
+                <details className="group border border-white/10 bg-black/40 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-all open:border-cyan-500/50 open:shadow-[0_0_20px_rgba(6,182,212,0.1)]">
+                  <summary className="p-6 font-mono text-sm uppercase tracking-widest text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
+                    <span>Is this accurate?</span>
+                    <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="p-6 pt-0 text-sm text-white/50 leading-relaxed border-t border-white/5">
-                    We utilize GLM-4V computer vision for 98% biometric precision.
+                  <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
+                    <span className="text-cyan-500 mr-2">{'>'}</span> We utilize GLM-4V computer vision for 98% biometric precision.
                   </div>
                 </details>
-                <details className="group border border-white/5 bg-white/[0.02] rounded-xl overflow-hidden cursor-pointer">
-                  <summary className="p-6 font-bold text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
-                    Is my photo saved?
-                    <ChevronDown className="w-4 h-4 text-white/50 group-open:rotate-180 transition-transform" />
+                <details className="group border border-white/10 bg-black/40 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-all open:border-cyan-500/50 open:shadow-[0_0_20px_rgba(6,182,212,0.1)]">
+                  <summary className="p-6 font-mono text-sm uppercase tracking-widest text-white flex justify-between items-center list-none [&::-webkit-details-marker]:hidden">
+                    <span>Is my photo saved?</span>
+                    <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
                   </summary>
-                  <div className="p-6 pt-0 text-sm text-white/50 leading-relaxed border-t border-white/5">
-                    Negative. Images are processed in RAM and purged immediately after analysis.
+                  <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
+                    <span className="text-cyan-500 mr-2">{'>'}</span> Negative. Images are processed in RAM and purged immediately after analysis.
                   </div>
                 </details>
               </div>
