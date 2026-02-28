@@ -13,8 +13,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aura-Max",
-  description: "Biometric Facial Profiling",
+  title: "AuraScan | The World's Most Advanced Aesthetic Engine",
+  description: "Quantify your facial harmony and get your optimization roadmap.",
 };
 
 export default function RootLayout({

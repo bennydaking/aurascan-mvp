@@ -1,110 +1,141 @@
 import { NextResponse } from "next/server";
+import { analyzeFaceWithZai, type ZaiFaceAnalysis } from "@/lib/zai";
+
+export const runtime = "nodejs";
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
+function toScoreFromCanthalTilt(tilt: number): number {
+  return clamp(Math.round(((tilt + 10) / 20) * 100), 0, 100);
+}
+
+function toScoreFromGonialAngleClass(gonialAngle: "Low" | "Ideal" | "High"): number {
+  if (gonialAngle === "Ideal") return 84;
+  if (gonialAngle === "High") return 74;
+  return 62;
+}
+
+function toScoreFromMidfaceCompactness(midfaceCompactness: number): number {
+  const ideal = 0.92;
+  const maxDistance = 0.18;
+  const distance = Math.abs(midfaceCompactness - ideal);
+  return clamp(Math.round(100 - (distance / maxDistance) * 100), 0, 100);
+}
+
+function toScoreFromFWHR(fwhr: number): number {
+  return clamp(Math.round(((fwhr - 1.4) / (2.2 - 1.4)) * 100), 0, 100);
+}
+
+function mapToUiPayload(result: ZaiFaceAnalysis) {
+  const score = clamp(result.score, 0, 100);
+  const percentile = clamp(result.percentile, 0, 100);
+  const symmetry = clamp(result.metrics.symmetry, 0, 100);
+  const dermalClarity = clamp(result.metrics.dermalClarity, 0, 100);
+
+  const orbitalScore = toScoreFromCanthalTilt(result.metrics.canthalTilt);
+  const projectionScore = toScoreFromGonialAngleClass(result.metrics.gonialAngle);
+  const lowerThirdScore = toScoreFromFWHR(result.metrics.fWHR);
+  const midfaceScore = toScoreFromMidfaceCompactness(result.metrics.midfaceCompactness);
+  const percentileTop = clamp(100 - percentile, 0, 100);
+  const optimizationCurrent = clamp(Math.round(score * 0.84 + 6), 0, 100);
+  const optimizationProjected = clamp(Math.max(optimizationCurrent + 9, score + 6), 0, 100);
+
+  return {
+    locked: true,
+    score,
+    percentile,
+    metrics: {
+      canthalTilt: result.metrics.canthalTilt,
+      gonialAngle: result.metrics.gonialAngle,
+      midfaceCompactness: result.metrics.midfaceCompactness,
+      fWHR: result.metrics.fWHR,
+      symmetry,
+      dermalClarity,
+    },
+    archetype: result.archetype,
+    summary: result.summary,
+
+    // Backward-compatible payload expected by existing UI components.
+    harmonyIndex: score,
+    globalPercentile: `Top ${percentileTop}%`,
+    structuralProfile: result.archetype,
+    granularMetrics: [
+      {
+        label: "Canthal Tilt Alignment",
+        value: orbitalScore,
+        interpretation: `${result.metrics.canthalTilt.toFixed(1)}°`,
+      },
+      {
+        label: "Jaw Projection Index",
+        value: projectionScore,
+        interpretation: result.metrics.gonialAngle,
+      },
+      {
+        label: "Lower Third Projection",
+        value: lowerThirdScore,
+        interpretation: `FWHR ${result.metrics.fWHR.toFixed(2)}`,
+      },
+      {
+        label: "Midface Proportion Ratio",
+        value: midfaceScore,
+        interpretation: result.metrics.midfaceCompactness.toFixed(2),
+      },
+      {
+        label: "Bilateral Symmetry",
+        value: Math.round(symmetry),
+        interpretation: "Mapped",
+      },
+      {
+        label: "Skin Clarity Index",
+        value: Math.round(dermalClarity),
+        interpretation: "Mapped",
+      },
+    ],
+    optimizationPotential: {
+      current: optimizationCurrent,
+      projected: optimizationProjected,
+      text: result.summary,
+    },
+  };
+}
+
+async function readImageBase64(request: Request): Promise<string> {
+  const contentType = request.headers.get("content-type") ?? "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const fileEntry = formData.get("image") ?? formData.get("file");
+
+    if (!(fileEntry instanceof File)) {
+      throw new Error("FormData field 'image' (or 'file') is required.");
+    }
+
+    const arrayBuffer = await fileEntry.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const mimeType = fileEntry.type || "image/jpeg";
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
+  }
+
+  if (contentType.includes("application/json")) {
+    const body = (await request.json()) as { imageBase64?: unknown };
+    if (typeof body.imageBase64 === "string" && body.imageBase64.trim()) {
+      return body.imageBase64;
+    }
+  }
+
+  throw new Error("Expected multipart/form-data with image or JSON with imageBase64.");
+}
 
 export async function POST(request: Request) {
-    try {
-        const { imageBase64 } = await request.json();
-
-        if (!imageBase64) {
-            return NextResponse.json({ error: "Image data is required" }, { status: 400 });
-        }
-
-        const apiKey = process.env.ZAI_API_KEY;
-        if (!apiKey) {
-            // Return a simulated response if no API key is set for demo/MVP purposes
-            console.warn("ZAI_API_KEY is not set. Returning simulated biometric data.");
-            return NextResponse.json({
-                overallScore: 84,
-                metrics: {
-                    symmetry: 78,
-                    jawline: 82,
-                    cheekbones: 75,
-                    skin: 90,
-                    eyes: 80
-                },
-                deviations: [
-                    "Asymmetric canthal tilt (Left: +3°, Right: +1°)",
-                    "Mandibular angles lack crisp definition",
-                    "Mild periorbital hyperpigmentation detected"
-                ],
-                optimizations: [
-                    "Maxillary expansion to improve jawline vector",
-                    "Dedicated skincare protocol for hyperpigmentation",
-                    "Masseter hypertrophy training"
-                ]
-            });
-        }
-
-        const response = await fetch("https://api.z.ai/api/coding/paas/v4/chat/completions", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-                model: "glm-4.5-air",
-                messages: [
-                    {
-                        role: "user",
-                        content: [
-                            {
-                                type: "text",
-                                text: "You are an advanced biometric analysis system. Analyze the facial image for:\n\nSymmetry (Left/Right balance)\nJawline (Masseter definition & angularity)\nCheekbones (Zygomatic prominence)\nSkin Quality (Texture & aging)\nEye Area (Canthal tilt & spacing)\n\nOUTPUT: Return ONLY a JSON object with this structure (Scores are 0-100, strict grading):\n{ \"overallScore\": 84, \"metrics\": { \"symmetry\": 78, \"jawline\": 82, \"cheekbones\": 75, \"skin\": 90, \"eyes\": 80 }, \"deviations\": [\"Brief flaw 1\", \"Brief flaw 2\"], \"optimizations\": [\"Actionable fix 1\", \"Actionable fix 2\"] }"
-                            },
-                            {
-                                type: "image_url",
-                                image_url: {
-                                    url: imageBase64
-                                }
-                            }
-                        ]
-                    }
-                ]
-            })
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Z.ai API Error (Fallback to Simulation):", errorText);
-
-            // SIMULATION FALLBACK: Returns high-fidelity clinical data so user can test UI
-            return NextResponse.json({
-                overallScore: 71,
-                metrics: {
-                    symmetry: 68,
-                    jawline: 72,
-                    cheekbones: 60,
-                    skin: 84,
-                    eyes: 65
-                },
-                deviations: [
-                    "Bilateral infraorbital volume deficiency",
-                    "Mandibular angle at 128° (Sub-optimal projection)",
-                    "Dermal texture showing moderate lipid imbalance"
-                ],
-                optimizations: [
-                    "Targeted masseter growth stimulation",
-                    "Hyarylon-acid integration for orbital support",
-                    "Optimized micro-nutrient protocol (Zinc, Vitamin A)"
-                ]
-            });
-        }
-
-        const data = await response.json();
-        const resultText = data.choices[0].message.content;
-
-        // Parse the JSON output (in case the model wrapped it in markdown code blocks)
-        let parsedResult;
-        try {
-            const jsonString = resultText.replace(/```json/g, "").replace(/```/g, "").trim();
-            parsedResult = JSON.parse(jsonString);
-        } catch (e) {
-            console.error("Failed to parse Z.ai output:", resultText);
-            return NextResponse.json({ error: "Invalid biometric data format" }, { status: 500 });
-        }
-
-        return NextResponse.json(parsedResult);
-    } catch (error) {
-        console.error("Analysis route error:", error);
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
-    }
+  try {
+    const imageBase64 = await readImageBase64(request);
+    const result = await analyzeFaceWithZai(imageBase64);
+    return NextResponse.json(mapToUiPayload(result));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unexpected analyze error";
+    const status = message.includes("ZAI_API_KEY") ? 503 : message.includes("Expected multipart") || message.includes("FormData field") ? 400 : 502;
+    return NextResponse.json({ error: message }, { status });
+  }
 }

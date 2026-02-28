@@ -15,8 +15,36 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
+@layer base {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.008;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    filter: contrast(120%) brightness(120%);
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.012;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+}
+
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0.015) 30%, transparent 62%),
+    var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
@@ -37,24 +65,66 @@ body {
 
 @keyframes aurora {
   0% {
-    background-position: 50% 50%, 50% 50%;
+    transform: translate(-10%, -10%) rotate(0deg) scale(1);
   }
 
   50% {
-    background-position: 100% 50%, 0% 50%;
+    transform: translate(10%, 10%) rotate(180deg) scale(1.2);
   }
 
   100% {
-    background-position: 50% 50%, 50% 50%;
+    transform: translate(-10%, -10%) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes breathing {
+
+  0%,
+  100% {
+    transform: scale(1);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.02);
+  }
+
+  50% {
+    transform: scale(1.02);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 80px rgba(255, 255, 255, 0.05);
   }
 }
 
 .animate-aurora {
-  animation: aurora 60s linear infinite;
-  background-image:
-    radial-gradient(ellipse at 100% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 0% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
-  background-size: 200% 200%;
+  animation: aurora 30s linear infinite;
+  background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.1), transparent 70%);
+  filter: blur(100px);
+}
+
+.animate-breathing {
+  animation: breathing 4s ease-in-out infinite;
+}
+
+@keyframes laser {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+.animate-laser {
+  animation: laser 3s linear infinite;
 }
 
 @keyframes float {

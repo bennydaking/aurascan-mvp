@@ -2,73 +2,64 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 
 const scanSteps = [
-    { text: "Initializing Vision Engine", delay: 0 },
-    { text: "Mapping facial topography", delay: 1000 },
-    { text: "Calculating canthal tilt vectors", delay: 2000 },
-    { text: "Evaluating skin texture & lipid flow", delay: 3200 },
-    { text: "Computing structural symmetry", delay: 4500 },
-    { text: "Finalizing Biometric Verdict", delay: 5800 },
+    "Mapping facial proportions",
+    "Measuring symmetry vectors",
+    "Calculating aesthetic harmony",
+    "Evaluating structural balance",
 ];
 
 export function ScannerOverlay() {
     const [activeStep, setActiveStep] = useState(0);
+    const [progress, setProgress] = useState(12);
 
     useEffect(() => {
-        const timers = scanSteps.map((step, index) => {
-            return setTimeout(() => {
-                setActiveStep(index);
-            }, step.delay);
-        });
-        return () => timers.forEach(clearTimeout);
+        const interval = setInterval(() => {
+            setActiveStep((prev) => (prev + 1) % scanSteps.length);
+            setProgress((prev) => {
+                if (prev >= 92) return 36;
+                return prev + 14;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-2xl rounded-[3rem] overflow-hidden pointer-events-none">
-            <div className="relative flex flex-col items-center max-w-sm w-full p-8 p-12 text-center rounded-3xl bg-white/[0.01] border border-white/[0.05] shadow-2xl">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/78 backdrop-blur-xl rounded-[3rem] overflow-hidden pointer-events-none p-6">
+            <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[260px] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.06),transparent_72%)] pointer-events-none" />
 
-                {/* Glowing Scanner Line */}
-                <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
-
-                <div className="relative mb-8">
-                    <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full" />
-                    <Loader2 className="relative w-10 h-10 text-white animate-spin" />
+            <div className="relative w-full max-w-[21rem] sm:max-w-[23rem] rounded-[2rem] border border-white/[0.08] bg-white/[0.025] px-6 sm:px-7 py-7 sm:py-8">
+                <div className="text-[10px] uppercase tracking-[0.22em] text-white/52 font-mono text-center mb-5 sm:mb-6">
+                    Analyzing Structure
                 </div>
 
-                <div className="w-full flex justify-center h-[120px]">
-                    <div className="flex flex-col items-start gap-4">
-                        {scanSteps.map((step, index) => {
-                            const isPast = index < activeStep;
-                            const isCurrent = index === activeStep;
-                            const isFuture = index > activeStep;
-
-                            if (isFuture && index > activeStep + 1) return null; // Show only up to one future step
-
-                            return (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{
-                                        opacity: isFuture ? 0 : 1,
-                                        x: 0,
-                                        color: isPast ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.9)'
-                                    }}
-                                    className="flex items-center gap-3 text-sm font-light tracking-tight transition-colors duration-500"
-                                >
-                                    <div className="w-4 h-4 rounded-full border border-white/20 flex items-center justify-center">
-                                        {isPast && <div className="w-2 h-2 rounded-full bg-white" />}
-                                        {isCurrent && <div className="w-1.5 h-1.5 rounded-full bg-white/50 animate-pulse" />}
-                                    </div>
-                                    <span>{step.text}</span>
-                                    {isPast && <span className="text-[10px] uppercase font-mono tracking-widest ml-2 text-white/30">[OK]</span>}
-                                </motion.div>
-                            );
-                        })}
-                    </div>
+                <div className="w-full h-[2px] rounded-full bg-white/[0.08] overflow-hidden mb-5 sm:mb-6">
+                    <motion.div
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 1.2, ease: "easeInOut" }}
+                        className="h-full rounded-full bg-cyan-300/75"
+                    />
                 </div>
 
+                <div className="h-6 overflow-hidden flex items-center justify-center mb-4">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeStep}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -8 }}
+                            transition={{ duration: 0.4 }}
+                            className="text-[12px] sm:text-[12.5px] font-medium tracking-[0.01em] text-white/78 text-center"
+                        >
+                            {scanSteps[activeStep]}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+
+                <div className="text-[11px] text-white/38 text-center tracking-[0.01em]">
+                    This usually takes a few seconds.
+                </div>
             </div>
         </div>
     );
