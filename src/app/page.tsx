@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, ChangeEvent } from "react";
-import { Upload, ScanFace, AlertTriangle, Activity, ChevronDown, Crosshair, Network } from "lucide-react";
+import { Upload, Hexagon, Microscope, TrendingUp, ChevronDown, Crosshair, Network } from "lucide-react";
 import { ScannerOverlay } from "@/components/ScannerOverlay";
 import { ResultsPaywall } from "@/components/ResultsPaywall";
 import { BiometricReport } from "@/components/BiometricReport";
@@ -9,14 +9,16 @@ import { BiometricReport } from "@/components/BiometricReport";
 type AppState = "idle" | "scanning" | "results" | "report";
 
 interface AnalysisResult {
-  ratings: {
+  overallScore: number;
+  metrics: {
     symmetry: number;
     jawline: number;
+    cheekbones: number;
     skin: number;
-    overall: number;
+    eyes: number;
   };
-  flaws: string[];
-  improvements: string[];
+  deviations: string[];
+  optimizations: string[];
 }
 
 export default function Home() {
@@ -164,8 +166,8 @@ export default function Home() {
 
                 <div className="relative mt-8">
                   <div className="absolute inset-0 bg-white/30 blur-xl rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="relative inline-flex items-center justify-center bg-white text-black font-bold py-3 px-10 text-sm uppercase tracking-wider rounded-md transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover-glitch">
-                    Start Scan
+                  <span className="relative inline-flex items-center justify-center bg-white text-black font-black py-4 px-12 text-base uppercase tracking-widest rounded-md transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] hover-glitch">
+                    [ START SCAN ]
                   </span>
                 </div>
               </div>
@@ -210,19 +212,19 @@ export default function Home() {
 
             <div className="grid md:grid-cols-3 gap-6 mb-24">
               <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.2)] transition-all duration-300 group">
-                <Crosshair className="w-8 h-8 text-cyan-400 mb-6 group-hover:scale-110 transition-transform" />
+                <Hexagon className="w-8 h-8 text-cyan-400 mb-6 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Geometric Mapping</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Precise calculation of facial ratios, symmetry scores, and jawline angularity.</p>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Precise calculation of facial ratios, symmetry scores, and jawline angularity. We quantify your structure.</p>
               </div>
               <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-red-500/50 hover:shadow-[0_0_30px_rgba(239,68,68,0.2)] transition-all duration-300 group">
-                <AlertTriangle className="w-8 h-8 text-red-500 mb-6 group-hover:scale-110 transition-transform" />
+                <Microscope className="w-8 h-8 text-red-500 mb-6 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Pathology Report</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Identification of negative tilts, asymmetry, and dermal inconsistencies.</p>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Identification of negative tilts, asymmetry, and dermal inconsistencies. See what others see, unfiltered.</p>
               </div>
               <div className="p-8 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 group">
-                <Network className="w-8 h-8 text-purple-400 mb-6 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Optimization Protocol</h3>
-                <p className="text-sm text-white/50 leading-relaxed font-mono">Specific, non-invasive and invasive protocols to maximize your genetic potential.</p>
+                <TrendingUp className="w-8 h-8 text-purple-400 mb-6 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-black uppercase tracking-widest text-lg mb-3">Optimization Roadmap</h3>
+                <p className="text-sm text-white/50 leading-relaxed font-mono">Actionable, step-by-step protocols to maximize your genetic potential. Stop guessing, start improving.</p>
               </div>
             </div>
 
@@ -235,7 +237,7 @@ export default function Home() {
                     <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
-                    <span className="text-cyan-500 mr-2">{'>'}</span> We utilize GLM-4V computer vision for 98% biometric precision.
+                    <span className="text-cyan-500 mr-2">{'>'}</span> Affirmative. We utilize advanced computer vision for 98% biometric precision.
                   </div>
                 </details>
                 <details className="group border border-white/10 bg-black/40 rounded-xl overflow-hidden cursor-pointer hover:border-white/20 transition-all open:border-cyan-500/50 open:shadow-[0_0_20px_rgba(6,182,212,0.1)]">
@@ -244,7 +246,7 @@ export default function Home() {
                     <ChevronDown className="w-4 h-4 text-cyan-400 group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="p-6 pt-0 text-sm text-white/60 leading-relaxed border-t border-white/5 font-mono">
-                    <span className="text-cyan-500 mr-2">{'>'}</span> Negative. Images are processed in RAM and purged immediately after analysis.
+                    <span className="text-cyan-500 mr-2">{'>'}</span> Negative. Images are processed in RAM and purged immediately after analysis. Privacy is absolute.
                   </div>
                 </details>
               </div>

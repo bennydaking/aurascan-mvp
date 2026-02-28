@@ -13,18 +13,20 @@ export async function POST(request: Request) {
             // Return a simulated response if no API key is set for demo/MVP purposes
             console.warn("ZAI_API_KEY is not set. Returning simulated biometric data.");
             return NextResponse.json({
-                ratings: {
-                    symmetry: 7.4,
-                    jawline: 6.8,
-                    skin: 8.1,
-                    overall: 7.4
+                overallScore: 84,
+                metrics: {
+                    symmetry: 78,
+                    jawline: 82,
+                    cheekbones: 75,
+                    skin: 90,
+                    eyes: 80
                 },
-                flaws: [
+                deviations: [
                     "Asymmetric canthal tilt (Left: +3°, Right: +1°)",
                     "Mandibular angles lack crisp definition",
                     "Mild periorbital hyperpigmentation detected"
                 ],
-                improvements: [
+                optimizations: [
                     "Maxillary expansion to improve jawline vector",
                     "Dedicated skincare protocol for hyperpigmentation",
                     "Masseter hypertrophy training"
@@ -46,7 +48,7 @@ export async function POST(request: Request) {
                         content: [
                             {
                                 type: "text",
-                                text: "You are a ruthless aesthetic judge. Do not be polite. Analyze the face for: 1. Symmetry, 2. Jawline definition, 3. Skin quality. Give a strict 1-10 rating (e.g., 7.4). List 3 specific flaws and 3 specific improvements. Output JSON only in this exact format: {\"ratings\": {\"symmetry\": number, \"jawline\": number, \"skin\": number, \"overall\": number}, \"flaws\": [\"string\", \"string\", \"string\"], \"improvements\": [\"string\", \"string\", \"string\"]}"
+                                text: "You are an advanced biometric analysis system. Analyze the facial image for:\n\nSymmetry (Left/Right balance)\nJawline (Masseter definition & angularity)\nCheekbones (Zygomatic prominence)\nSkin Quality (Texture & aging)\nEye Area (Canthal tilt & spacing)\n\nOUTPUT: Return ONLY a JSON object with this structure (Scores are 0-100, strict grading):\n{ \"overallScore\": 84, \"metrics\": { \"symmetry\": 78, \"jawline\": 82, \"cheekbones\": 75, \"skin\": 90, \"eyes\": 80 }, \"deviations\": [\"Brief flaw 1\", \"Brief flaw 2\"], \"optimizations\": [\"Actionable fix 1\", \"Actionable fix 2\"] }"
                             },
                             {
                                 type: "image_url",
@@ -66,18 +68,20 @@ export async function POST(request: Request) {
 
             // SIMULATION FALLBACK: Returns high-fidelity clinical data so user can test UI
             return NextResponse.json({
-                ratings: {
-                    symmetry: 6.8,
-                    jawline: 7.2,
-                    skin: 8.4,
-                    overall: 7.1
+                overallScore: 71,
+                metrics: {
+                    symmetry: 68,
+                    jawline: 72,
+                    cheekbones: 60,
+                    skin: 84,
+                    eyes: 65
                 },
-                flaws: [
+                deviations: [
                     "Bilateral infraorbital volume deficiency",
                     "Mandibular angle at 128° (Sub-optimal projection)",
                     "Dermal texture showing moderate lipid imbalance"
                 ],
-                improvements: [
+                optimizations: [
                     "Targeted masseter growth stimulation",
                     "Hyarylon-acid integration for orbital support",
                     "Optimized micro-nutrient protocol (Zinc, Vitamin A)"
