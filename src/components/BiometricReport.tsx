@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircle, Sparkles, CheckCircle2, Download, Terminal, Lock, ArrowUpRight, Activity, Percent } from "lucide-react";
+import { Sparkles, Lock, ArrowUpRight, Activity } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 

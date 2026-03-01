@@ -161,7 +161,6 @@ export function ResultsPaywall({ imageUrl, data, onUnlock }: ResultsPaywallProps
       });
 
       if (!response.ok) {
-        console.log(response.status);
         throw new Error("Unable to initialize checkout");
       }
 
@@ -182,24 +181,24 @@ export function ResultsPaywall({ imageUrl, data, onUnlock }: ResultsPaywallProps
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_8%,rgba(255,255,255,0.08),transparent_60%)]" />
 
       {step === "locked" && (
-        <div className="relative p-6 sm:p-8 md:p-10 space-y-7 sm:space-y-8 text-center">
+        <div className="relative p-6 sm:p-8 md:p-10 space-y-9 sm:space-y-10 text-center">
           <div>
-            <div className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-white/76 font-mono mb-4">
+            <div className="inline-flex items-center rounded-full border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-[10px] uppercase tracking-[0.24em] text-white/76 font-mono mb-4">
               Analysis Complete
             </div>
-            <h2 className="text-[1.6rem] sm:text-[1.9rem] font-medium text-white tracking-tight leading-tight mb-2.5">
+            <h2 className="text-[1.6rem] sm:text-[1.9rem] font-semibold text-white tracking-tight leading-tight mb-4">
               Your Structural Profile Is Ready.
             </h2>
           </div>
 
-          <section className="rounded-[1.5rem] border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7">
-            <h3 className="text-[1.05rem] sm:text-[1.15rem] font-semibold tracking-tight text-white mb-3">
+          <section className="rounded-[1.5rem] border border-white/[0.1] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015))] p-6 sm:p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <h3 className="text-[1.05rem] sm:text-[1.15rem] font-semibold tracking-[0.01em] text-white mb-3">
               Aesthetic Harmony Index
             </h3>
-            <div className="mx-auto w-20 h-20 rounded-full border border-white/[0.2] flex items-center justify-center bg-white/[0.02] mb-3">
-              <Lock className="w-5 h-5 text-white/78" />
+            <div className="mx-auto w-[5.4rem] h-[5.4rem] rounded-full border border-cyan-200/30 flex items-center justify-center bg-[radial-gradient(circle,rgba(255,255,255,0.12),rgba(255,255,255,0.02)_62%)] mb-3 shadow-[0_0_24px_rgba(103,232,249,0.12),inset_0_0_16px_rgba(255,255,255,0.08)] relative overflow-hidden">
+              <Lock className="w-6 h-6 text-cyan-100/90" />
             </div>
-            <p className="text-[13px] text-white/56">Your score has been calculated and ranked globally.</p>
+            <p className="text-[13px] text-white/60">Your global rank is ready.</p>
           </section>
 
           <section className="rounded-[1.5rem] border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7">
@@ -209,17 +208,23 @@ export function ResultsPaywall({ imageUrl, data, onUnlock }: ResultsPaywallProps
             <div className="text-[1.35rem] sm:text-[1.55rem] font-medium tracking-tight text-white leading-tight">
               High Contrast Profile
             </div>
+            <p className="mt-2 text-[12px] text-white/48">Distinct structural intensity detected.</p>
           </section>
 
           <section>
+            <div className="mb-3.5">
+              <span className="inline-flex items-center rounded-full border border-cyan-200/30 bg-cyan-100/[0.06] px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-cyan-100/80 font-mono">
+                Early Launch Price
+              </span>
+            </div>
             <button
               onClick={unlock}
-              className="w-full max-w-[27rem] mx-auto bg-white text-black font-semibold text-[15px] sm:text-base py-4.5 sm:py-5 px-6 rounded-[1.15rem] shadow-[0_12px_24px_rgba(0,0,0,0.3)]"
+              className="w-full max-w-[27rem] mx-auto bg-white text-black font-semibold text-[15px] sm:text-base py-4.5 sm:py-5 px-6 rounded-[1.15rem] shadow-[0_12px_24px_rgba(0,0,0,0.3)] hover:brightness-[1.02] hover:shadow-[0_14px_28px_rgba(0,0,0,0.34)] active:scale-[0.99] transition-[filter,box-shadow,transform] duration-150"
             >
               Reveal My Results — $2.99
             </button>
             <div className="mt-4 text-[11px] text-white/44 leading-relaxed max-w-[32rem] mx-auto">
-              Instant access. Secure session.
+              One-time payment. Instant unlock.
             </div>
           </section>
         </div>
@@ -233,9 +238,9 @@ export function ResultsPaywall({ imageUrl, data, onUnlock }: ResultsPaywallProps
       )}
 
       {step === "unlocked" && (
-        <div className="relative p-6 sm:p-8 md:p-10 space-y-10 sm:space-y-11">
+        <div className="relative p-6 sm:p-8 md:p-10 space-y-12 sm:space-y-14">
           <section className="text-center">
-            <h2 className="text-[1.35rem] sm:text-[1.5rem] font-medium tracking-tight text-white mb-3">
+            <h2 className="text-[1.35rem] sm:text-[1.5rem] font-semibold tracking-tight text-white mb-4">
               Aesthetic Harmony Score
             </h2>
             <div className="text-[4rem] sm:text-[4.5rem] font-semibold leading-none tracking-[-0.03em] text-white mb-2">

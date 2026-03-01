@@ -171,16 +171,16 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center">
+        <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center px-6 sm:px-8 md:px-0">
 
           {appState === "idle" && (
-            <div className="text-center mb-5 sm:mb-6 md:mb-8 mt-6 sm:mt-7 md:mt-4 w-full px-0">
-              <h1 className="text-[2.35rem] min-[430px]:text-[2.55rem] sm:text-[2.85rem] md:text-[5.5rem] leading-[0.97] md:leading-[0.96] font-semibold mb-3 sm:mb-4 tracking-[-0.032em] text-white drop-shadow-2xl uppercase">
-                <span className="block">YOUR FACE.</span>
-                <span className="block">DECODED.</span>
+            <div className="text-center mb-11 sm:mb-12 md:mb-10 mt-7 sm:mt-8 md:mt-4 w-full px-0">
+              <h1 className="text-[2.2rem] min-[430px]:text-[2.45rem] sm:text-[2.85rem] md:text-[5.15rem] leading-[1.02] md:leading-[0.98] font-bold mb-6 sm:mb-7 tracking-[-0.025em] text-white drop-shadow-2xl">
+                <span className="block">How Does Your Face</span>
+                <span className="block">Rank?</span>
               </h1>
-              <p className="text-white/80 text-sm sm:text-[0.95rem] md:text-base font-medium tracking-[0.015em] max-w-[17rem] min-[430px]:max-w-[19rem] sm:max-w-[22rem] md:max-w-[28rem] mx-auto leading-relaxed mb-0">
-                Stop guessing. Start measuring.
+              <p className="text-white/78 text-[0.84rem] sm:text-[0.89rem] md:text-[0.92rem] font-medium tracking-[0.012em] max-w-[18.5rem] min-[430px]:max-w-[21rem] sm:max-w-[24rem] md:max-w-[31rem] mx-auto leading-[1.56] mb-0">
+                AI-measured symmetry, structure & global ranking in 20 seconds.
               </p>
             </div>
           )}
@@ -192,7 +192,7 @@ export default function Home() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl aspect-square bg-cyan-500/[0.012] blur-[130px] rounded-full pointer-events-none z-0" />
 
             {appState === "idle" && (
-              <div className="flex flex-col items-center gap-6 sm:gap-8 md:gap-9 w-full">
+              <div className="flex flex-col items-center gap-11 sm:gap-12 md:gap-10 w-full">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[42%] w-[460px] h-[460px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.055)_0%,rgba(255,255,255,0.016)_35%,transparent_72%)] blur-[76px] pointer-events-none z-0" />
                 <div
                   onDragOver={(e) => e.preventDefault()}
@@ -229,7 +229,7 @@ export default function Home() {
                   className="group relative px-12 sm:px-12 py-[1.18rem] sm:py-5 bg-gradient-to-b from-white to-zinc-50 text-zinc-950 rounded-[1.08rem] font-bold text-[1.05rem] sm:text-lg tracking-tight shadow-[0_12px_26px_rgba(0,0,0,0.34)] md:hover:shadow-[0_15px_34px_rgba(0,0,0,0.4),0_0_22px_rgba(255,255,255,0.09)] active:scale-[0.98] active:shadow-[0_7px_15px_rgba(0,0,0,0.24)] transition-[transform,box-shadow,filter] duration-200 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    INITIALIZE SCAN
+                    GET MY SCORE
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/[0.05] to-transparent -translate-x-full group-hover:animate-shimmer" />
                 </button>
