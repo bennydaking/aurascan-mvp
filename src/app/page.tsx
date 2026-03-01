@@ -165,8 +165,8 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 w-[760px] h-[760px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(255,255,255,0.02)_0%,transparent_62%)] rounded-full pointer-events-none z-0" />
 
         {/* Top Left Logo */}
-        <div className="absolute top-6 left-6 md:top-8 md:left-8 z-50">
-          <span className="font-sans font-medium text-white/90 tracking-tight text-lg drop-shadow-sm">
+        <div className="absolute top-7 left-6 md:top-9 md:left-8 z-50">
+          <span className="font-sans font-medium text-white/85 tracking-[0.06em] text-base md:text-[1.02rem] drop-shadow-sm">
             AURASCAN
           </span>
         </div>
