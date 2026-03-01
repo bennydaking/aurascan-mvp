@@ -175,12 +175,14 @@ export default function Home() {
 
           {appState === "idle" && (
             <div className="text-center mb-11 sm:mb-12 md:mb-10 mt-7 sm:mt-8 md:mt-4 w-full px-0">
-              <h1 className="text-[2.2rem] min-[430px]:text-[2.45rem] sm:text-[2.85rem] md:text-[5.15rem] leading-[1.02] md:leading-[0.98] font-bold mb-6 sm:mb-7 tracking-[-0.025em] text-white drop-shadow-2xl">
-                <span className="block">How Does Your Face</span>
-                <span className="block">Rank?</span>
+              <h1 className="max-w-[19.5rem] sm:max-w-none mx-auto text-[2.2rem] min-[430px]:text-[2.45rem] sm:text-[2.85rem] md:text-[5.15rem] leading-[1.08] sm:leading-[1.02] md:leading-[0.98] font-bold mb-6 sm:mb-7 tracking-[-0.025em] text-white drop-shadow-2xl">
+                <span className="block sm:hidden">How Does</span>
+                <span className="block sm:hidden">Your Face Rank?</span>
+                <span className="hidden sm:block">How Does Your Face</span>
+                <span className="hidden sm:block">Rank?</span>
               </h1>
               <p className="text-white/78 text-[0.84rem] sm:text-[0.89rem] md:text-[0.92rem] font-medium tracking-[0.012em] max-w-[18.5rem] min-[430px]:max-w-[21rem] sm:max-w-[24rem] md:max-w-[31rem] mx-auto leading-[1.56] mb-0">
-                AI-measured symmetry, structure & global ranking in 20 seconds.
+                AI-measured symmetry, structure & global ranking.
               </p>
             </div>
           )}
